@@ -7,11 +7,14 @@ fn main() {
     println!("Hello, world!");
 
     let mut rustvm = RustVM::new();
-    let pointer1 = rustvm.alloc("00000001");
-    let pointer2 = rustvm.alloc("00000010");
-    let pointer3 = rustvm.alloc("00000001");
-    rustvm.free(pointer2);
-    let pointer4 = rustvm.alloc("11111111");
+    let pointer1 = rustvm.memalloc(vec!["00000001"], 1);
+    let pointer2 = rustvm.memalloc(vec!["00000010"], 1);
+    rustvm.memfree(pointer2);
+    rustvm.regmov("r1", "11111111");
+    println!("{:#?}", rustvm.memget(pointer1));
+    println!("{:#?}", rustvm.regget("r1"));
+    rustvm.intalloc(21 as i8, 8);
+    rustvm.stralloc("Hello", "5");
 
     println!("{:#?}", rustvm);
 }
